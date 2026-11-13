@@ -2,7 +2,8 @@
   <Project Path="ADOnet.Android/ADOnet.Android.csproj">
     <Deploy />
   </Project>
-  <Project Path="ADOnet.Browser/ADOnet.Browser.csproj" />
+  <Project Path="ADOnet.ConsoleApp/ADOnet.ConsoleApp.csproj" />
+  <Project Path="ADOnet.Data/ADOnet.Data.csproj" />
   <Project Path="ADOnet.Desktop/ADOnet.Desktop.csproj" />
   <Project Path="ADOnet/ADOnet.csproj" />
 </Solution>
