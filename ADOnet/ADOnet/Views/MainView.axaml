@@ -2,17 +2,164 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:ADOnet.ViewModels"
+             xmlns:vm="clr-namespace:ADOnet.ViewModels"
+             xmlns:m="clr-namespace:ADOnet.Data.Models;assembly=ADOnet.Data"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ADOnet.Views.MainView"
              x:DataType="vm:MainViewModel">
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
+  <Design.DataContext>
+    <!-- Нужен только для предпросмотра в редакторе: на эту папку ссылается код шаблона. -->
+    <vm:MainViewModel />
+  </Design.DataContext>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+  <TabControl>
+
+    <!-- Экран 1. Клиенты: список, добавление, изменение, удаление -->
+    <TabItem Header="Клиенты">
+      <ScrollViewer>
+        <StackPanel Margin="8" Spacing="6">
+          <ListBox x:Name="ClientsListBox" Height="200"
+                   SelectionChanged="ClientsListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="m:Client">
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <TextBlock Text="ФИО" />
+          <TextBox x:Name="ClientFullNameTextBox" />
+
+          <TextBlock Text="Телефон" />
+          <TextBox x:Name="ClientPhoneTextBox" />
+
+          <TextBlock Text="Email (необязательно)" />
+          <TextBox x:Name="ClientEmailTextBox" />
+
+          <TextBlock Text="Дата рождения (необязательно)" />
+          <CalendarDatePicker x:Name="ClientBirthDatePicker" />
+
+          <CheckBox x:Name="ClientIsRegularCheckBox" Content="Постоянный клиент" />
+
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <Button Content="Добавить" Click="AddClientButton_Click" />
+            <Button Content="Сохранить" Click="SaveClientButton_Click" />
+            <Button Content="Удалить" Click="DeleteClientButton_Click" />
+          </StackPanel>
+
+          <TextBlock x:Name="ClientsMessageTextBlock" TextWrapping="Wrap" />
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
+    <!-- Экран 2. Костюмы: список, добавление, изменение, удаление -->
+    <TabItem Header="Костюмы">
+      <ScrollViewer>
+        <StackPanel Margin="8" Spacing="6">
+          <ListBox x:Name="CostumesListBox" Height="200"
+                   SelectionChanged="CostumesListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="m:Costume">
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <TextBlock Text="Название" />
+          <TextBox x:Name="CostumeNameTextBox" />
+
+          <TextBlock Text="Стиль (например, элегантный, винтаж, косплей)" TextWrapping="Wrap" />
+          <TextBox x:Name="CostumeStyleTextBox" />
+
+          <TextBlock Text="Размер (целое число)" />
+          <TextBox x:Name="CostumeSizeTextBox" />
+
+          <TextBlock Text="Цвет (необязательно)" />
+          <TextBox x:Name="CostumeColorTextBox" />
+
+          <TextBlock Text="Цена за сутки, руб. (целое число)" TextWrapping="Wrap" />
+          <TextBox x:Name="CostumeDailyPriceTextBox" />
+
+          <CheckBox x:Name="CostumeIsAvailableCheckBox" Content="Свободен" />
+
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <Button Content="Добавить" Click="AddCostumeButton_Click" />
+            <Button Content="Сохранить" Click="SaveCostumeButton_Click" />
+            <Button Content="Удалить" Click="DeleteCostumeButton_Click" />
+          </StackPanel>
+
+          <TextBlock x:Name="CostumesMessageTextBlock" TextWrapping="Wrap" />
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
+    <!-- Экран 3. Аренды: список, добавление через два ComboBox, удаление -->
+    <TabItem Header="Аренды">
+      <ScrollViewer>
+        <StackPanel Margin="8" Spacing="6">
+          <ListBox x:Name="RentalsListBox" Height="200"
+                   SelectionChanged="RentalsListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="m:Rental">
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <TextBlock Text="Клиент" />
+          <ComboBox x:Name="RentalClientComboBox" HorizontalAlignment="Stretch">
+            <ComboBox.ItemTemplate>
+              <DataTemplate x:DataType="m:Client">
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+
+          <TextBlock Text="Костюм" />
+          <ComboBox x:Name="RentalCostumeComboBox" HorizontalAlignment="Stretch">
+            <ComboBox.ItemTemplate>
+              <DataTemplate x:DataType="m:Costume">
+                <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+
+          <TextBlock Text="Дата начала аренды" />
+          <CalendarDatePicker x:Name="RentalStartDatePicker" />
+
+          <TextBlock Text="Дата возврата (необязательно)" />
+          <CalendarDatePicker x:Name="RentalReturnDatePicker" />
+
+          <TextBlock Text="Количество суток (целое число)" />
+          <TextBox x:Name="RentalDaysTextBox" />
+
+          <TextBlock Text="Итоговая сумма, руб. (целое число)" />
+          <TextBox x:Name="RentalTotalPriceTextBox" />
+
+          <CheckBox x:Name="RentalIsReturnedCheckBox" Content="Костюм возвращён" />
+
+          <WrapPanel>
+            <Button Content="Добавить" Margin="0,0,6,6" Click="AddRentalButton_Click" />
+            <Button Content="Сохранить" Margin="0,0,6,6" Click="SaveRentalButton_Click" />
+            <Button Content="Вернуть костюм" Margin="0,0,6,6" Click="ReturnRentalButton_Click" />
+            <Button Content="Удалить" Margin="0,0,6,6" Click="DeleteRentalButton_Click" />
+          </WrapPanel>
+
+          <TextBlock x:Name="RentalsMessageTextBlock" TextWrapping="Wrap" />
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
+    <!-- Экран 4. На руках: только просмотр -->
+    <TabItem Header="На руках">
+      <ListBox x:Name="ActiveRentalsListBox">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="m:Rental">
+            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </TabItem>
+
+  </TabControl>
 </UserControl>
