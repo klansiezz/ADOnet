@@ -2,17 +2,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:ADOnet.ViewModels"
+             xmlns:vm="clr-namespace:ADOnet.ViewModels"
+             xmlns:m="clr-namespace:ADOnet.Data.Models;assembly=ADOnet.Data"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ADOnet.Views.MainView"
              x:DataType="vm:MainViewModel">
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
+  <Design.DataContext>
+    <!-- Нужен только для предпросмотра в редакторе: на эту папку ссылается код шаблона. -->
+    <vm:MainViewModel />
+  </Design.DataContext>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+  <TabControl>
+
+    <TabItem Header="Клиенты">
+      <ListBox x:Name="ClientsListBox">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="m:Client">
+            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </TabItem>
+
+    <TabItem Header="Костюмы">
+      <ListBox x:Name="CostumesListBox">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="m:Costume">
+            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </TabItem>
+
+    <TabItem Header="Аренды">
+      <ListBox x:Name="RentalsListBox">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="m:Rental">
+            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </TabItem>
+
+    <TabItem Header="На руках">
+      <ListBox x:Name="ActiveRentalsListBox">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="m:Rental">
+            <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="4" />
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </TabItem>
+
+  </TabControl>
 </UserControl>
